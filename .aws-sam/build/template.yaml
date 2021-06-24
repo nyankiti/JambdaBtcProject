@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'JambdaBtcProject
+
+  Sample SAM Template for JambdaBtcProject
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  BuyBTCFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: BuyBTCFunction
+      Handler: BuyBTC.App::handleRequest
+      Runtime: java11
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        BuyBTC:
+          Type: Api
+          Properties:
+            Path: /buybtc
+            Method: get
+Outputs:
+  BuyBTCApi:
+    Description: API Gateway endpoint URL for Prod stage for Buy BTC function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  BuyBTCFunction:
+    Description: Buy BTC Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - BuyBTCFunction
+      - Arn
+  BuyBTCFunctionIamRole:
+    Description: Implicit IAM Role created for Buy BTC function
+    Value:
+      Fn::GetAtt:
+      - BuyBTCFunctionRole
+      - Arn
